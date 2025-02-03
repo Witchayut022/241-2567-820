@@ -1,0 +1,18 @@
+1 docker -v // check docker version 
+2 docker ps // List all running containers
+3 docker ps --all or docker ps -a // List all containers
+4 docker run hello-world // Run a container
+5 docker rm container_id // Remove a container
+6 docker run -p 80:80 nginx // Run a container with port mapping
+7 docker run -p 80:80 nginx
+8 docker stop container_id // stop a container
+9 docker rm container_id // Remove a container
+10 docker exec -it container_id bash 
+
+linux command
+ls // List all files
+pwd // Present working directory
+cd // Change directory
+cd..// Go back to hte previous directory
+cd/etc/nginx // Go to the nginx directory
+cat file_name // Display the content of a file
