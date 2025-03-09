@@ -9,6 +9,8 @@
 9 docker rm container_id // Remove a container
 10 docker exec -it container_id bash 
 
+docker-compose up -d // run docker
+
 linux command
 ls // List all files
 pwd // Present working directory

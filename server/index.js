@@ -3,12 +3,35 @@ const bodyParser = require("body-parser");
 const app = express();
 const cors = require("cors");
 const mysql = require("mysql2/promise");
+const e = require("express");
 
 app.use(bodyParser.json());
 app.use(cors());
 const port = 8000;
 let users = [];
 
+const validateData = (userData) => {
+  let errors = []
+  if(!userData.firstname){
+      errors.push('กรุณากรอกชื่อ')
+  }   
+  if(!userData.lastname){
+      errors.push('กรุณากรอกนามสกุล')
+  }
+  if(!userData.age){
+      errors.push('กรุณากรอกอายุ')
+  }
+  if(!userData.gender){
+      errors.push('กรุณาเลือกเพศ')
+  }
+  if(!userData.interests){
+      errors.push('กรุณาเลือกสิ่งที่สนใจ')
+  }
+  if(!userData.description){
+      errors.push('กรุณากรอกข้อมูลตัวเอง')
+  }
+  return errors
+}
 // GET /user สำหรับ get users ทั้งหมด
 // POST /users สำหรับเพิ่ม user ใหม่เข้าไป
 // DELETE /users/:id สำหรับลบ user ที่มี id ตามที่ระบุ
@@ -40,19 +63,31 @@ app.get("/users", async (req, res) => {
   res.json(results[0]);
 });
   
-//path = POST /user
+//path = POST /users สำหรับเพิ่ม user ใหม่บันทึกเข้าไป
 app.post("/users", async (req, res) => {
   try {
     let user = req.body;
+    const errors = validateData(user)
+    if(errors.length > 0){
+        throw{
+            message: 'กรุณากรอกข้อมูลให้ครบถ้วน',
+            errors: errors
+        
+        }
+    }
     const results = await conn.query("INSERT INTO users SET ?", user);
     res.json({
       message: "User created successfully",
       data: results[0],
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Error creating user", error: error.message });
+    const errorMessage = error.message || 'something went wrong'
+    const errors = error.errors || []
+    console.error("errorMessage", error.message);
+    res.status(500).json({ 
+      error: errorMessage, 
+      error: errors
+    })
   }
 });
 // path get user รายบุคคล
