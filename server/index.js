@@ -3,7 +3,6 @@ const bodyParser = require("body-parser");
 const app = express();
 const cors = require("cors");
 const mysql = require("mysql2/promise");
-const e = require("express");
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -47,16 +46,6 @@ const initMySQL = async () => {
   });
 };
 
-// app.get("/testdb-new", async (req, res) => {
-//   try {
-//     const results = await conn.query("SELECT * FROM users");
-//     res.json(results[0]);
-//   } catch (error) {
-//     console.log("error", error.message);
-//     res.status(500).json({ error: "Error fetching users" });
-//   }
-// });
-
 // path = GET /users
 app.get("/users", async (req, res) => {
   const results = await conn.query("SELECT * FROM users");
@@ -72,7 +61,6 @@ app.post("/users", async (req, res) => {
         throw{
             message: 'กรุณากรอกข้อมูลให้ครบถ้วน',
             errors: errors
-        
         }
     }
     const results = await conn.query("INSERT INTO users SET ?", user);
@@ -90,6 +78,7 @@ app.post("/users", async (req, res) => {
     })
   }
 });
+
 // path get user รายบุคคล
 app.get("/users/:id", async (req, res) => {
   try {
@@ -129,6 +118,7 @@ app.put("/user/:id", async (req, res) => {
     });
   }
 });
+
 app.delete("/user/:id", async(req, res) => {
   try {
     let id = req.params.id;
@@ -145,6 +135,7 @@ app.delete("/user/:id", async(req, res) => {
     });
   }
 });
+
 app.listen(port, async (req, res) => {
   await initMySQL();
   console.log(`Server is running on port ${port}`);

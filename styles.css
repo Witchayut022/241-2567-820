@@ -51,7 +51,7 @@ body{
     background-color: lightgreen;
     display: block;
 }
-.message.error{
+.message.danger{
     background-color: lightcoral;
     display: block;
 }
